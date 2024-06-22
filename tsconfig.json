@@ -1,0 +1,18 @@
+{
+ "compileOnSave": true,
+ "compilerOptions": {
+   "target": "ESNext",
+   "allowJs": true,
+   "skipLibCheck": true,
+   "esModuleInterop": true,
+   "allowSyntheticDefaultImports": true,
+   "strict": true,
+   "forceConsistentCasingInFileNames": true,
+   "module": "commonjs",
+   "moduleResolution": "node",
+   "resolveJsonModule": true,
+   "isolatedModules": true,
+   "paths": {"tests/*": ["./tests/*"]}
+ },
+ "include": ["."]
+}

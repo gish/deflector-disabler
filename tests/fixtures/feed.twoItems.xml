@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sr>
+  <copyright>Copyright Sveriges Radio 2024. All rights reserved.</copyright>
+  <pagination>
+    <page>1</page>
+    <size>2</size>
+    <totalhits>2</totalhits>
+    <totalpages>1</totalpages>
+  </pagination>
+  <episodes>
+    <episode id="2413771">
+      <title>Hampus Nessvold</title>
+      <description>Skådespelaren om varför Försvarsmakten bör undvika att kalla in just honom om kriget kommer.</description>
+      <url>https://sverigesradio.se/avsnitt/2413771</url>
+      <program id="2071" name="Sommar &amp; Vinter i P1" />
+      <audiopreference>broadcast</audiopreference>
+      <audiopriority>aac</audiopriority>
+      <audiopresentation>music</audiopresentation>
+      <publishdateutc>2024-06-22T11:00:00Z</publishdateutc>
+      <imageurl>https://static-cdn.sr.se/images/2071/53526fb9-9302-40e2-8b4e-3681f4c5b889.jpg?preset=api-default-square</imageurl>
+      <imageurltemplate>https://static-cdn.sr.se/images/2071/53526fb9-9302-40e2-8b4e-3681f4c5b889.jpg</imageurltemplate>
+      <photographer>Mattias Ahlm</photographer>
+      <broadcast>
+        <availablestoputc>2024-07-22T04:55:00Z</availablestoputc>
+        <playlist id="9370581">
+          <url>https://api.sr.se/api/radio/radio.aspx?type=broadcast&amp;id=9370581&amp;codingformat=.m4a&amp;metafile=asx&amp;quality=hi</url>
+          <statkey>/app/avsnitt/p1[k(132)]/sommar &amp; vinter i p1[p(2071)]/[e(2413771)]</statkey>
+          <duration>4595</duration>
+          <publishdateutc>2024-06-22T04:55:00Z</publishdateutc>
+        </playlist>
+        <broadcastfiles>
+          <broadcastfile id="9370581">
+            <url>https://sverigesradio.se/topsy/ljudfil/srapi/9370581-hi.m4a</url>
+            <statkey>/app/avsnitt/p1[k(132)]/sommar &amp; vinter i p1[p(2071)]/[e(2413771)]</statkey>
+            <duration>4595</duration>
+            <publishdateutc>2024-06-22T04:55:00Z</publishdateutc>
+          </broadcastfile>
+        </broadcastfiles>
+      </broadcast>
+      <broadcasttime>
+        <starttimeutc>2024-06-22T11:00:00Z</starttimeutc>
+        <endtimeutc>2024-06-22T12:20:00Z</endtimeutc>
+      </broadcasttime>
+      <listenpodfile id="9370585">
+        <url>https://sverigesradio.se/topsy/ljudfil/srapi/9370585.mp3</url>
+        <statkey>/app/avsnitt/p1[k(132)]/sommar &amp; vinter i p1[p(2071)]/[e(2413771)]</statkey>
+        <duration>2856</duration>
+        <publishdateutc>2024-06-22T11:00:00Z</publishdateutc>
+        <title>Hampus Nessvold</title>
+        <description />
+        <filesizeinbytes>45718551</filesizeinbytes>
+        <program id="2071" name="Sommar &amp; Vinter i P1" />
+        <availablefromutc>2024-06-22T04:55:00Z</availablefromutc>
+      </listenpodfile>
+      <downloadpodfile id="9370585">
+        <url>https://sverigesradio.se/topsy/ljudfil/srapi/9370585.mp3</url>
+        <statkey>/app/avsnitt/p1[k(132)]/sommar &amp; vinter i p1[p(2071)]/[e(2413771)]</statkey>
+        <duration>2856</duration>
+        <publishdateutc>2024-06-22T11:00:00Z</publishdateutc>
+        <title>Hampus Nessvold</title>
+        <description />
+        <filesizeinbytes>45718551</filesizeinbytes>
+        <program id="2071" name="Sommar &amp; Vinter i P1" />
+        <availablefromutc>2024-06-22T04:55:00Z</availablefromutc>
+      </downloadpodfile>
+      <channelid>132</channelid>
+    </episode>
+    <episode id="2393740">
+      <title>Årets Sommarvärdar presenteras</title>
+      <description>Programchef Bibi Rödöö presenterar årets 58 Sommarvärdar.</description>
+      <url>https://sverigesradio.se/avsnitt/2393740</url>
+      <program id="2071" name="Sommar &amp; Vinter i P1" />
+      <audiopreference>broadcast</audiopreference>
+      <audiopriority>aac</audiopriority>
+      <audiopresentation>music</audiopresentation>
+      <publishdateutc>2024-06-11T11:00:00Z</publishdateutc>
+      <imageurl>https://static-cdn.sr.se/images/2071/b4a8f917-2507-4b34-b14a-10d2731821f5.jpg?preset=api-default-square</imageurl>
+      <imageurltemplate>https://static-cdn.sr.se/images/2071/b4a8f917-2507-4b34-b14a-10d2731821f5.jpg</imageurltemplate>
+      <broadcast>
+        <availablestoputc>2024-07-11T12:00:00Z</availablestoputc>
+        <playlist id="9360224">
+          <url>https://api.sr.se/api/radio/radio.aspx?type=broadcast&amp;id=9360224&amp;codingformat=.m4a&amp;metafile=asx&amp;quality=hi</url>
+          <statkey>/app/avsnitt/p1[k(132)]/sommar &amp; vinter i p1[p(2071)]/[e(2393740)]</statkey>
+          <duration>3600</duration>
+          <publishdateutc>2024-06-11T11:00:00Z</publishdateutc>
+        </playlist>
+        <broadcastfiles>
+          <broadcastfile id="9360224">
+            <url>https://sverigesradio.se/topsy/ljudfil/srapi/9360224-hi.m4a</url>
+            <statkey>/app/avsnitt/p1[k(132)]/sommar &amp; vinter i p1[p(2071)]/[e(2393740)]</statkey>
+            <duration>3600</duration>
+            <publishdateutc>2024-06-11T11:00:00Z</publishdateutc>
+          </broadcastfile>
+        </broadcastfiles>
+      </broadcast>
+      <broadcasttime>
+        <starttimeutc>2024-06-11T11:00:00Z</starttimeutc>
+        <endtimeutc>2024-06-11T12:00:00Z</endtimeutc>
+      </broadcasttime>
+      <listenpodfile id="9360211">
+        <url>https://sverigesradio.se/topsy/ljudfil/srapi/9360211.mp3</url>
+        <statkey>/app/avsnitt/p1[k(132)]/sommar &amp; vinter i p1[p(2071)]/[e(2393740)]</statkey>
+        <duration>3585</duration>
+        <publishdateutc>2024-06-11T11:00:00Z</publishdateutc>
+        <title>Årets Sommarvärdar presenteras</title>
+        <description />
+        <filesizeinbytes>57369891</filesizeinbytes>
+        <program id="2071" name="Sommar &amp; Vinter i P1" />
+        <availablefromutc>2024-06-11T12:00:00Z</availablefromutc>
+      </listenpodfile>
+      <downloadpodfile id="9360211">
+        <url>https://sverigesradio.se/topsy/ljudfil/srapi/9360211.mp3</url>
+        <statkey>/app/avsnitt/p1[k(132)]/sommar &amp; vinter i p1[p(2071)]/[e(2393740)]</statkey>
+        <duration>3585</duration>
+        <publishdateutc>2024-06-11T11:00:00Z</publishdateutc>
+        <title>Årets Sommarvärdar presenteras</title>
+        <description />
+        <filesizeinbytes>57369891</filesizeinbytes>
+        <program id="2071" name="Sommar &amp; Vinter i P1" />
+        <availablefromutc>2024-06-11T12:00:00Z</availablefromutc>
+      </downloadpodfile>
+      <channelid>132</channelid>
+    </episode>
+  </episodes>
+</sr>
