@@ -20,10 +20,10 @@ export const generateFeed = (srFeed: SRFeed): string => {
       url: episode.downloadpodfile.url,
       guid: episode.downloadpodfile.url,
       date: episode.downloadpodfile.publishdateutc,
-      imageUrl: episode.imageurl,
       enclosure: {
         url: episode.downloadpodfile.url,
       },
+      itunesImage: episode.imageurl,
     });
   });
   return feed.buildXml();
