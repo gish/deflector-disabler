@@ -4,9 +4,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 * * * *'  # Runs every hour
-  push:
-    branches:
-      - main
 
 jobs:
   run:
@@ -34,7 +31,7 @@ jobs:
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git add generated.rss
-        git commit -m 'Update generated.rss'
+        git commit -m 'update generated feed'
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
