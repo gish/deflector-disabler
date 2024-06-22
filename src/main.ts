@@ -62,6 +62,9 @@ const generatePodcastFeed = (srFeed: SRFeed): string => {
       url: episode.downloadpodfile.url,
       guid: episode.downloadpodfile.url,
       date: episode.downloadpodfile.publishdateutc,
+      enclosure: {
+        url: episode.downloadpodfile.url,
+      },
     });
   });
   return feed.buildXml();
