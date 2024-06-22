@@ -1,6 +1,5 @@
 import fs from "node:fs";
-import { generateFeed } from "./generateFeed";
-import { parseFeed } from "./utils";
+import { generateFeed, parseFeed } from "./utils";
 
 const FEED_INPUT_URL =
   "https://api.sr.se/api/v2/episodes/index?programid=2071&fromdate=2024-06-01&todate=2024-12-31&audioquality=hi";
