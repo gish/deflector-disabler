@@ -1,5 +1,5 @@
 import { XMLParser } from "fast-xml-parser";
-import { Podcast } from "podcast";
+import { Podcast } from "podcast-rss";
 import fs from "node:fs";
 
 type SRFeed = {
