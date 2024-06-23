@@ -5,10 +5,11 @@ import { Podcast } from "podcast-rss";
 export const generateFeed = (srFeed: SRFeed): string => {
   const firstEpisode = srFeed.sr.episodes.episode[0];
   const feed = new Podcast({
-    title: "Deflector Disabler",
+    title: "Late Spring in Program One",
     description: "2024",
     feedUrl: "",
     siteUrl: "",
+    imageUrl: "https://gish.github.io/deflector-disabler/assets/cover.jpeg",
     pubDate: firstEpisode
       ? firstEpisode.downloadpodfile.publishdateutc
       : undefined,
