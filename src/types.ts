@@ -1,20 +1,20 @@
 export type SRFeed = {
-  sr: {
-    copyright: string;
-    pagination: SRFeedPagination;
+  sr: SRFeedMeta & {
     episodes: { episode: SRFeedEpisode[] };
   };
 };
+
+export type SRFeedMeta = { copyright: string; pagination: SRFeedPagination };
 
 type SRFeedPagination = {
   page: number;
   size: number;
   totalhits: number;
   totalpages: number;
-  nextpage: string;
+  nextpage: string | undefined;
 };
 
-type SRFeedEpisode = {
+export type SRFeedEpisode = {
   title: string;
   description: string;
   url: string;

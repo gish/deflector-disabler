@@ -1,9 +1,9 @@
 import { XMLParser } from "fast-xml-parser";
-import { SRFeed } from "./types";
+import { SRFeed, SRFeedEpisode } from "./types";
 import { Podcast } from "podcast-rss";
 
-export const generateFeed = (srFeed: SRFeed): string => {
-  const firstEpisode = srFeed.sr.episodes.episode[0];
+export const generateFeed = (episodes: SRFeedEpisode[]): string => {
+  const firstEpisode = episodes[0];
   const feed = new Podcast({
     title: "Late Spring in Program One",
     description: "2024",
@@ -14,7 +14,7 @@ export const generateFeed = (srFeed: SRFeed): string => {
       ? firstEpisode.downloadpodfile.publishdateutc
       : undefined,
   });
-  srFeed.sr.episodes.episode.forEach((episode) => {
+  episodes.forEach((episode) => {
     feed.addItem({
       title: episode.title,
       description: episode.description,
@@ -35,6 +35,7 @@ export const parseFeed = (XMLData: string): SRFeed | null => {
     const parser = new XMLParser();
     return parser.parse(XMLData);
   } catch (_) {
+    console.log("Failed parsing feed");
     return null;
   }
 };
