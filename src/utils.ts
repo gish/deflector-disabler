@@ -6,10 +6,12 @@ export const generateFeed = (episodes: SRFeedEpisode[]): string => {
   const firstEpisode = episodes[0];
   const feed = new Podcast({
     title: "Late Spring in Program One",
-    description: "2024",
+    description:
+      "Avsnitt av Sommar i P1 från 2024. Allt innehåll kommer från Sveriges Radio.",
     feedUrl: "",
     siteUrl: "",
     imageUrl: "https://gish.github.io/deflector-disabler/assets/cover.png",
+    copyright: "Sveriges Radio",
     pubDate: firstEpisode
       ? firstEpisode.downloadpodfile.publishdateutc
       : undefined,
@@ -18,7 +20,7 @@ export const generateFeed = (episodes: SRFeedEpisode[]): string => {
     feed.addItem({
       title: episode.title,
       description: episode.description,
-      url: episode.downloadpodfile.url,
+      url: episode.url,
       guid: episode.downloadpodfile.url,
       date: episode.downloadpodfile.publishdateutc,
       enclosure: {
