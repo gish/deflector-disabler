@@ -9,7 +9,7 @@ export const generateFeed = (episodes: SRFeedEpisode[]): string => {
     description: "2024",
     feedUrl: "",
     siteUrl: "",
-    imageUrl: "https://gish.github.io/deflector-disabler/assets/cover.jpeg",
+    imageUrl: "https://gish.github.io/deflector-disabler/assets/cover.png",
     pubDate: firstEpisode
       ? firstEpisode.downloadpodfile.publishdateutc
       : undefined,
