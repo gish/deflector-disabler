@@ -13,8 +13,8 @@ export const generateFeed = (episodes: SRFeedEpisode[]): string => {
     imageUrl: "https://gish.github.io/deflector-disabler/assets/cover.png",
     copyright: "Sveriges Radio",
     pubDate: firstEpisode
-      ? firstEpisode.downloadpodfile.publishdateutc
-      : undefined,
+      ? firstEpisode.broadcast.playlist.publishdateutc
+      : new Date(),
   });
   episodes.forEach((episode) => {
     feed.addItem({
