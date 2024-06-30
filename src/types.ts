@@ -19,7 +19,6 @@ export type SRFeedEpisode = {
   description: string;
   url: string;
   imageurl: string;
-  broadcast?: { playlist: { publishdateutc: string } };
   downloadpodfile: {
     url: string;
     publishdateutc: string;

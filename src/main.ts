@@ -1,4 +1,4 @@
-import fs from "node:fs";
+import { writeFileSync } from "fs";
 import { generateFeed, parseFeed } from "./utils";
 import { SRFeedEpisode } from "./types";
 
@@ -21,7 +21,7 @@ const getFeed = async (url: string): Promise<string | null> => {
 
 const writeFileFeed = (podcastFeed: string): boolean => {
   try {
-    fs.writeFileSync("./generated.rss", podcastFeed);
+    writeFileSync("./generated.rss", podcastFeed);
     return true;
   } catch (_) {
     return false;
