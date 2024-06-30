@@ -45,6 +45,6 @@ jobs:
       with:
         apiUsername: ${{ secrets.ELKS_API_USERNAME }}
         apiPassword: ${{ secrets.ELKS_API_PASSWORD }}
-        from: 'Deflector disable'
-        to: '+46702382276'
+        from: 'GH action'
+        to: ${{ secrets.REPORT_PHONE_NUMBER }}
         message: "Generate feed failed: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/"
