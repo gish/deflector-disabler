@@ -1,6 +1,6 @@
 export type SRFeed = {
   sr: SRFeedMeta & {
-    episodes: { episode: SRFeedEpisode[] };
+    episodes: { episode: SRFeedEpisode[] | SRFeedEpisode };
   };
 };
 
@@ -19,9 +19,10 @@ export type SRFeedEpisode = {
   description: string;
   url: string;
   imageurl: string;
-  broadcast: { playlist: { publishdateutc: string } };
+  broadcast?: { playlist: { publishdateutc: string } };
   downloadpodfile: {
     url: string;
     publishdateutc: string;
+    availablefromutc: string;
   };
 };
