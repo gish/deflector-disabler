@@ -26,6 +26,7 @@ export const generateFeed = (episodes: SRFeedEpisode[]): string => {
       enclosure: {
         url: episode.downloadpodfile.url,
       },
+      imageUrl: episode.imageurl,
       itunesImage: episode.imageurl,
     });
   });
