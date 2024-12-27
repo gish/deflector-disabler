@@ -25,3 +25,21 @@ export type SRFeedEpisode = {
     availablefromutc: string;
   };
 };
+
+export type Episode = {
+  title: string;
+  description: string;
+  url: string;
+  imageurl: string;
+  downloadUrl: string;
+  downloadPublishdateUTC: string;
+  downloadAvailableFromUTC: string;
+};
+
+export type RadioProgram = {
+  id: number;
+  title: string;
+  slug: string;
+  description: string;
+  lastUpdated: number;
+};
