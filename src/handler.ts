@@ -1,13 +1,13 @@
 import { existsSync, mkdirSync, writeFileSync } from "fs";
+import { RadioProgram, SRFeedEpisode } from "./types";
+import { DatabaseSync } from "node:sqlite";
 import {
-  generateFeed,
+  getAllProgramEpisodes,
   getAllPrograms,
-  parseFeed,
   saveProgramEpisodes,
   setProgramUpdatedTimestamp,
-} from "./utils";
-import { Episode, RadioProgram, SRFeedEpisode } from "./types";
-import { DatabaseSync } from "node:sqlite";
+} from "./utils.database";
+import { generateFeed, parseFeed } from "./utils.feed";
 
 function formatDate(timestamp: number): string {
   const d = new Date(timestamp);
@@ -95,17 +95,6 @@ const getProgramEpisodesByUrl = async (
     return [...episodes, ...nextFeedEpisodes];
   }
 
-  return episodes;
-};
-
-const getAllProgramEpisodes = (
-  program: RadioProgram,
-  database: DatabaseSync,
-) => {
-  const statement = database.prepare(
-    "SELECT id, title, description, url, imageUrl, downloadUrl, downloadPublishDateUTC, downloadAvailableFromUTC FROM episodes WHERE programId = ?",
-  );
-  const episodes = statement.all(program.id) as Episode[];
   return episodes;
 };
 
