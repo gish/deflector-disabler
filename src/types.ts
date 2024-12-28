@@ -38,8 +38,10 @@ export type Episode = {
 
 export type RadioProgram = {
   id: number;
+  srId: number;
   title: string;
   slug: string;
   description: string;
+  imageUrl: string;
   lastUpdated: number;
 };

@@ -1,4 +1,4 @@
-import { writeFileSync } from "fs";
+import { existsSync, mkdirSync, writeFileSync } from "fs";
 import {
   generateFeed,
   getAllPrograms,
@@ -40,6 +40,9 @@ const writeFeedFile = (
   program: RadioProgram,
   podcastFeed: string,
 ): boolean => {
+  if (!existsSync(path)) {
+    mkdirSync(path);
+  }
   try {
     writeFileSync(`${path}/${program.slug}.rss`, podcastFeed);
     return true;
@@ -56,6 +59,7 @@ export const fetchProgramEpisodes = async (
   const formattedFromDate = formatDate(lastUpdated);
   const formattedToDate = formatDate(now);
   const url = `https://api.sr.se/api/v2/episodes/index?programid=${programId}&fromdate=${formattedFromDate}&todate=${formattedToDate}&audioquality=hi`;
+  console.log({ url });
 
   return getProgramEpisodesByUrl(url);
 };
@@ -70,6 +74,10 @@ const getProgramEpisodesByUrl = async (
 
   const parsedFeed = parseFeed(feed);
   if (!parsedFeed) {
+    return null;
+  }
+
+  if (parsedFeed.sr.pagination.size === 0) {
     return null;
   }
 
@@ -106,16 +114,17 @@ export const handler = async (
   database: DatabaseSync,
   feedFilePath: string,
 ) => {
-  const programs = getAllPrograms(now, database);
   let success = true;
 
+  const programs = getAllPrograms(now, database);
   for (const program of programs) {
     const newEpisodes = await fetchProgramEpisodes(
-      program.id,
+      program.srId,
       program.lastUpdated,
       now.getTime(),
     );
 
+    console.log({ newEpisodes });
     if (!newEpisodes) {
       setProgramUpdatedTimestamp(program, now, database);
       continue;

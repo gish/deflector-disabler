@@ -50,7 +50,7 @@ export const getAllPrograms = (
 ): RadioProgram[] => {
   const epoch = now.getTime();
   const query = database.prepare(
-    "SELECT id, title, description, slug, lastUpdated FROM programs WHERE lastUpdated < ?",
+    "SELECT id, srId, title, description, slug, imageUrl, lastUpdated FROM programs WHERE lastUpdated < ?",
   );
   return query.all(epoch) as RadioProgram[];
 };
@@ -66,6 +66,7 @@ export const setProgramUpdatedTimestamp = (
   const changes = statement.run(epoch, program.id);
   return changes.changes === 1;
 };
+
 export const saveProgramEpisodes = (
   program: RadioProgram,
   episodes: SRFeedEpisode[],

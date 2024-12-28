@@ -23,28 +23,30 @@ describe("write new episodes to database", () => {
 
     database.exec(`DROP TABLE IF EXISTS programs`);
     database.exec(`CREATE TABLE IF NOT EXISTS programs(
-    id INTEGER PRIMARY KEY,
-    title STRING,
-    description STRING,
-    slug STRING,
-    lastUpdated INTEGER
-  )`);
+      id INTEGER PRIMARY KEY,
+      srId INTEGER NOT NULL,
+      title STRING NOT NULL,
+      description STRING NOT NULL,
+      slug STRING NOT NULL,
+      imageUrl STRING NOT NULL,
+      lastUpdated INTEGER NOT NULL
+    )`);
 
     database.exec(`DROP TABLE IF EXISTS episodes`);
     database.exec(`CREATE TABLE IF NOT EXISTS episodes(
-    id INTEGER PRIMARY KEY,
-    programId INTEGER,
-    title STRING,
-    description STRING,
-    url STRING,
-    imageUrl STRING,
-    downloadUrl STRING,
-    downloadPublishDateUTC STRING,
-    downloadAvailableFromUTC STRING
-  )`);
+      id INTEGER PRIMARY KEY,
+      programId INTEGER,
+      title STRING,
+      description STRING,
+      url STRING,
+      imageUrl STRING,
+      downloadUrl STRING,
+      downloadPublishDateUTC STRING,
+      downloadAvailableFromUTC STRING
+    )`);
 
     database.exec(
-      "INSERT INTO programs(id, title, description, slug, lastUpdated) VALUES(1, 'program title', 'program slug', 'program', 1)",
+      "INSERT INTO programs(srId, title, description, slug, imageUrl, lastUpdated) VALUES(1, 'program title', 'program slug', 'program', 'https://url', 1)",
     );
   });
 
