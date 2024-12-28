@@ -11,4 +11,14 @@ export const programs: RadioProgram[] = [
     imageUrl: "https://gish.github.io/deflector-disabler/assets/cover.png",
     lastUpdated: new Date("2024-06-01").getTime(),
   },
+  {
+    id: 2,
+    srId: 5067,
+    title: "Avsnitt av P3 Historia",
+    slug: "avsnitt-av-p3-historia",
+    description:
+      "Avsnitt av P3 Historia. Allt innehåll kommer från Sveriges Radio.",
+    imageUrl: "https://gish.github.io/deflector-disabler/assets/cover.png",
+    lastUpdated: new Date("2024-12-01").getTime(),
+  },
 ];
