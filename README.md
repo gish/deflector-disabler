@@ -1,7 +1,11 @@
 # deflector-disabler
 
-Generate Podcast feed with episodes of [Sommar i P1](https://sverigesradio.se/sommarip1) from 2024.
+Generate Podcast feeds with selected programs from Sverigs Radio.
 
 All audio content is produced by Sveriges Radio and retrieved via their API.
 
-Feed URL to add to your podcast player: [https://gish.github.io/deflector-disabler/generated.rss](https://gish.github.io/deflector-disabler/generated.rss)
+## Current programs
+
+Sommar & Vinter i P1: [https://gish.github.io/deflector-disabler/feeds/avsnitt-av-sommar-vinter-i-p1.rss](https://gish.github.io/deflector-disabler/feeds/avsnitt-av-sommar-vinter-i-p1.rss)
+
+P3 Historia: [https://gish.github.io/deflector-disabler/feeds/avsnitt-av-p3-historia.rss](https://gish.github.io/deflector-disabler/feeds/avsnitt-av-p3-historia.rss)
