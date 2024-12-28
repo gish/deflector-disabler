@@ -1,6 +1,7 @@
 import { Podcast } from "podcast-rss";
 import { Episode, RadioProgram, SRFeed } from "./types";
 import { XMLParser } from "fast-xml-parser";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 
 export const generatePodcastFeed = (
   program: RadioProgram,
@@ -56,4 +57,20 @@ export const getFeed = async (url: string): Promise<SRFeed | null> => {
     console.error("failed getting feed", { url });
   }
   return null;
+};
+
+export const writeFeedFile = (
+  path: string,
+  filename: string,
+  podcastFeed: string,
+): boolean => {
+  if (!existsSync(path)) {
+    mkdirSync(path);
+  }
+  try {
+    writeFileSync(`${path}/${filename}.rss`, podcastFeed);
+    return true;
+  } catch (_) {
+    return false;
+  }
 };

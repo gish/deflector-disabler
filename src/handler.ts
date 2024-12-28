@@ -1,5 +1,4 @@
-import { existsSync, mkdirSync, writeFileSync } from "fs";
-import { RadioProgram, SRFeedEpisode } from "./types";
+import { SRFeedEpisode } from "./types";
 import { DatabaseSync } from "node:sqlite";
 import {
   getAllProgramEpisodes,
@@ -7,35 +6,8 @@ import {
   saveProgramEpisodes,
   setProgramUpdatedTimestamp,
 } from "./utils.database";
-import { generatePodcastFeed, getFeed, parseFeed } from "./utils.feed";
-
-function formatDate(timestamp: number): string {
-  const d = new Date(timestamp);
-  let month = "" + (d.getMonth() + 1);
-  let day = "" + d.getDate();
-  const year = d.getFullYear();
-
-  if (month.length < 2) month = "0" + month;
-  if (day.length < 2) day = "0" + day;
-
-  return [year, month, day].join("-");
-}
-
-const writeFeedFile = (
-  path: string,
-  filename: string,
-  podcastFeed: string,
-): boolean => {
-  if (!existsSync(path)) {
-    mkdirSync(path);
-  }
-  try {
-    writeFileSync(`${path}/${filename}.rss`, podcastFeed);
-    return true;
-  } catch (_) {
-    return false;
-  }
-};
+import { generatePodcastFeed, getFeed, writeFeedFile } from "./utils.feed";
+import { formatDate } from "./utils";
 
 export const fetchProgramEpisodes = async (
   programId: number,
