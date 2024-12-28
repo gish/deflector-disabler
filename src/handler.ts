@@ -30,6 +30,7 @@ const writeFeedFile = (
     mkdirSync(path);
   }
   try {
+    console.log(`${path}/${program.slug}.rss`);
     writeFileSync(`${path}/${program.slug}.rss`, podcastFeed);
     return true;
   } catch (_) {

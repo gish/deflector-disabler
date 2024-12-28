@@ -5,6 +5,7 @@ import { handler } from "./handler";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import timemachine from "timemachine";
+import { addPrograms, createTables } from "./utils.database";
 
 describe("write new episodes to database", () => {
   const database = new DatabaseSync(":memory:");
@@ -12,8 +13,8 @@ describe("write new episodes to database", () => {
     timemachine.config({ dateString: "December 25, 2024 13:12:59" });
   });
   beforeEach(() => {
-    const filePath = `./tests/fixtures/feed.twoItems.xml`;
-    const fixture = readFileSync(filePath);
+    const fixturePath = `./tests/fixtures/feed.twoItems.xml`;
+    const fixture = readFileSync(fixturePath);
     global.fetch = jest.fn(() =>
       Promise.resolve({
         text: () => Promise.resolve(fixture),
@@ -21,38 +22,27 @@ describe("write new episodes to database", () => {
       }),
     ) as jest.Mock;
 
-    database.exec(`DROP TABLE IF EXISTS programs`);
-    database.exec(`CREATE TABLE IF NOT EXISTS programs(
-      id INTEGER PRIMARY KEY,
-      srId INTEGER NOT NULL,
-      title STRING NOT NULL,
-      description STRING NOT NULL,
-      slug STRING NOT NULL,
-      imageUrl STRING NOT NULL,
-      lastUpdated INTEGER NOT NULL
-    )`);
-
-    database.exec(`DROP TABLE IF EXISTS episodes`);
-    database.exec(`CREATE TABLE IF NOT EXISTS episodes(
-      id INTEGER PRIMARY KEY,
-      programId INTEGER,
-      title STRING,
-      description STRING,
-      url STRING,
-      imageUrl STRING,
-      downloadUrl STRING,
-      downloadPublishDateUTC STRING,
-      downloadAvailableFromUTC STRING
-    )`);
-
-    database.exec(
-      "INSERT INTO programs(srId, title, description, slug, imageUrl, lastUpdated) VALUES(1, 'program title', 'program slug', 'program', 'https://url', 1)",
+    createTables(database, true);
+    addPrograms(
+      [
+        {
+          id: 1,
+          srId: 22,
+          title: "program title",
+          description: "program description",
+          slug: "program",
+          imageUrl: "https://image/",
+          lastUpdated: 1,
+        },
+      ],
+      database,
     );
   });
 
-  afterAll(() => jest.restoreAllMocks());
+  afterEach(() => jest.restoreAllMocks());
 
   const filePath = mkdtempSync(join(tmpdir(), "deflector-disabler"));
+  console.log({ filePath });
 
   it.todo("should get paginated episodes");
 
@@ -85,7 +75,7 @@ describe("write new episodes to database", () => {
     await handler(now, database, filePath);
     const fetch = global.fetch as jest.Mock;
     expect(fetch).toHaveBeenCalledWith(
-      "https://api.sr.se/api/v2/episodes/index?programid=1&fromdate=1970-01-01&todate=2022-01-04&audioquality=hi",
+      "https://api.sr.se/api/v2/episodes/index?programid=22&fromdate=1970-01-01&todate=2022-01-04&audioquality=hi",
     );
   });
 
@@ -97,8 +87,8 @@ describe("write new episodes to database", () => {
   });
 
   it("should handle empty list of episodes", async () => {
-    const filePath = `./tests/fixtures/empty.episodes.xml`;
-    const fixture = readFileSync(filePath);
+    const fixturePath = `./tests/fixtures/empty.episodes.xml`;
+    const fixture = readFileSync(fixturePath);
     global.fetch = jest.fn(() =>
       Promise.resolve({
         text: () => Promise.resolve(fixture),

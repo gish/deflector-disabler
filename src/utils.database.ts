@@ -57,3 +57,59 @@ export const saveProgramEpisodes = (
     );
   }
 };
+
+export const createTables = (database: DatabaseSync, force: boolean) => {
+  if (force) {
+    database.exec("DROP TABLE IF EXISTS programs");
+  }
+  database.exec(`CREATE TABLE IF NOT EXISTS programs(
+    id INTEGER PRIMARY KEY,
+    srId INTEGER NOT NULL,
+    title STRING NOT NULL,
+    description STRING NOT NULL,
+    slug STRING NOT NULL,
+    imageUrl STRING NOT NULL,
+    lastUpdated INTEGER NOT NULL
+  )`);
+
+  if (force) {
+    database.exec("DROP TABLE IF EXISTS episodes");
+  }
+  database.exec(`CREATE TABLE IF NOT EXISTS episodes(
+    id INTEGER PRIMARY KEY,
+    programId INTEGER,
+    title STRING,
+    description STRING,
+    url STRING,
+    imageUrl STRING,
+    downloadUrl STRING,
+    downloadPublishDateUTC STRING,
+    downloadAvailableFromUTC STRING
+  )`);
+};
+
+export const addPrograms = (
+  programs: RadioProgram[],
+  database: DatabaseSync,
+) => {
+  const insertStatement = database.prepare(
+    "INSERT INTO PROGRAMS(srId, title, description, slug, imageUrl, lastUpdated) VALUES(?, ?, ?, ?,? ,?)",
+  );
+  const existsQuery = database.prepare(
+    "SELECT id FROM programs WHERE srId = ?",
+  );
+  for (const program of programs) {
+    const exists = existsQuery.get(program.srId) as RadioProgram | undefined;
+    if (exists) {
+      continue;
+    }
+    insertStatement.run(
+      program.srId,
+      program.title,
+      program.description,
+      program.slug,
+      program.imageUrl,
+      program.lastUpdated,
+    );
+  }
+};
