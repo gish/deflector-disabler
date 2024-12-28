@@ -10,7 +10,7 @@ import { addPrograms, createTables } from "./utils.database";
 describe("write new episodes to database", () => {
   const database = new DatabaseSync(":memory:");
   beforeAll(() => {
-    timemachine.config({ dateString: "December 25, 2024 13:12:59" });
+    timemachine.config({ timestamp: new Date("2024-12-25").getTime() });
   });
   beforeEach(() => {
     const fixturePath = `./tests/fixtures/feed.twoItems.xml`;
