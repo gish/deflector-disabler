@@ -7,4 +7,4 @@ const database = new DatabaseSync("./database.sql");
 createTables(database, false);
 addPrograms(programs, database);
 
-handler(new Date(), database, "./generated");
+handler(new Date(), database, "./feeds");
