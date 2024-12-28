@@ -58,11 +58,10 @@ const getProgramEpisodesByUrl = async (
     return null;
   }
 
-  if (feed.sr.pagination.size === 0) {
+  const episode = feed.sr.episodes.episode;
+  if (!episode) {
     return null;
   }
-
-  const episode = feed.sr.episodes.episode;
   const episodes = Array.isArray(episode) ? episode : [episode];
 
   const nextPage = feed.sr.pagination.nextpage;

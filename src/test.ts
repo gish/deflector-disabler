@@ -95,4 +95,18 @@ describe("write new episodes to database", () => {
     const generatedFile = readFileSync(`${filePath}/program.rss`, "utf8");
     expect(generatedFile).toMatchSnapshot();
   });
+
+  it("should handle empty list of episodes", async () => {
+    const filePath = `./tests/fixtures/empty.episodes.xml`;
+    const fixture = readFileSync(filePath);
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        text: () => Promise.resolve(fixture),
+        ok: true,
+      }),
+    ) as jest.Mock;
+    const now = new Date("2022-01-04");
+    // This should not throw
+    await handler(now, database, filePath);
+  });
 });
