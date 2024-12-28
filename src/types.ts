@@ -32,7 +32,7 @@ export type Episode = {
   url: string;
   imageurl: string;
   downloadUrl: string;
-  downloadPublishdateUTC: string;
+  downloadPublishDateUTC: string;
   downloadAvailableFromUTC: string;
 };
 

@@ -5,7 +5,7 @@ import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 
 export const generatePodcastFeed = (
   program: RadioProgram,
-  episodes: Episode[],
+  episodes: Episode[]
 ): string => {
   const firstEpisode = episodes[0];
   const podcastFeed = new Podcast({
@@ -23,7 +23,7 @@ export const generatePodcastFeed = (
       description: episode.description,
       url: episode.url,
       guid: episode.downloadUrl,
-      date: episode.downloadPublishdateUTC,
+      date: episode.downloadPublishDateUTC,
       enclosure: {
         url: episode.downloadUrl,
       },
@@ -62,7 +62,7 @@ export const getFeed = async (url: string): Promise<SRFeed | null> => {
 export const writeFeedFile = (
   path: string,
   filename: string,
-  podcastFeed: string,
+  podcastFeed: string
 ): boolean => {
   if (!existsSync(path)) {
     mkdirSync(path);
