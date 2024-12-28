@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/node": "^22.10.2",
     "fast-xml-parser": "^4.5.1",
     "podcast-rss": "^2.0.3",
     "ts-node": "^10.9.2",
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@types/jest": "^29.5.14",
     "jest": "^29.7.0",
+    "timemachine": "^0.3.2",
     "ts-jest": "^29.2.5",
     "ts-node-dev": "^2.0.0"
   }

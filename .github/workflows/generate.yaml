@@ -3,7 +3,7 @@ name: Generate feed
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 6 * * *'  # Runs every day at 6am UTC
+    - cron: "0 6 * * *" # Runs every day at 6am UTC
 
 jobs:
   run:
@@ -12,39 +12,40 @@ jobs:
       contents: write
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "23"
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Run tests
-      run: npm test
+      - name: Run tests
+        run: npm test
 
-    - name: Run script
-      run: npm start
+      - name: Run script
+        run: npm start
 
-    - name: Commit and push changes
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add generated.rss
-        git commit -m '[ci] update generated feed'
-        git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add ./feeds
+          git add database.sql
+          git commit -m '[ci] update generated feed'
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Send SMS action step
-      if: failure()
-      uses: 46elks/gh-actions-sms@v1.0.0
-      with:
-        apiUsername: ${{ secrets.ELKS_API_USERNAME }}
-        apiPassword: ${{ secrets.ELKS_API_PASSWORD }}
-        from: 'GHaction'
-        to: ${{ secrets.REPORT_PHONE_NUMBER }}
-        message: "Generate feed failed: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/"
+      - name: Send SMS action step
+        if: failure()
+        uses: 46elks/gh-actions-sms@v1.0.0
+        with:
+          apiUsername: ${{ secrets.ELKS_API_USERNAME }}
+          apiPassword: ${{ secrets.ELKS_API_PASSWORD }}
+          from: "GHaction"
+          to: ${{ secrets.REPORT_PHONE_NUMBER }}
+          message: "Generate feed failed: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/"
