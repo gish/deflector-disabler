@@ -42,7 +42,6 @@ describe("write new episodes to database", () => {
   afterEach(() => jest.restoreAllMocks());
 
   const filePath = mkdtempSync(join(tmpdir(), "deflector-disabler"));
-  console.log({ filePath });
 
   it.todo("should get paginated episodes");
 
@@ -70,12 +69,18 @@ describe("write new episodes to database", () => {
     expect(result.lastUpdated).toEqual(now.getTime());
   });
 
-  it("should only request episodes after last updated date", async () => {
-    const now = new Date("2022-01-04");
-    await handler(now, database, filePath);
+  it("should fetch episodes with right dates", async () => {
+    const today = new Date("2022-01-04");
     const fetch = global.fetch as jest.Mock;
+    await handler(today, database, filePath);
     expect(fetch).toHaveBeenCalledWith(
-      "https://api.sr.se/api/v2/episodes/index?programid=22&fromdate=1970-01-01&todate=2022-01-04&audioquality=hi",
+      "https://api.sr.se/api/v2/episodes/index?programid=22&fromdate=1970-01-02&todate=2022-01-05&audioquality=hi",
+    );
+
+    const nextDay = new Date("2022-01-12");
+    await handler(nextDay, database, filePath);
+    expect(fetch).toHaveBeenCalledWith(
+      "https://api.sr.se/api/v2/episodes/index?programid=22&fromdate=2022-01-05&todate=2022-01-13&audioquality=hi",
     );
   });
 

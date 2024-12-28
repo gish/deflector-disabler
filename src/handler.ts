@@ -23,15 +23,14 @@ function formatDate(timestamp: number): string {
 
 const writeFeedFile = (
   path: string,
-  program: RadioProgram,
+  filename: string,
   podcastFeed: string,
 ): boolean => {
   if (!existsSync(path)) {
     mkdirSync(path);
   }
   try {
-    console.log(`${path}/${program.slug}.rss`);
-    writeFileSync(`${path}/${program.slug}.rss`, podcastFeed);
+    writeFileSync(`${path}/${filename}.rss`, podcastFeed);
     return true;
   } catch (_) {
     return false;
@@ -40,11 +39,15 @@ const writeFeedFile = (
 
 export const fetchProgramEpisodes = async (
   programId: number,
-  lastUpdated: number,
+  lastRun: number,
   now: number,
 ): Promise<SRFeedEpisode[] | null> => {
-  const formattedFromDate = formatDate(lastUpdated);
-  const formattedToDate = formatDate(now);
+  const ONE_DAY_MS = 24 * 60 * 60 * 1e3;
+  /**
+   * Get episodes published the day after last run until tomorrow.
+   */
+  const formattedFromDate = formatDate(lastRun + ONE_DAY_MS);
+  const formattedToDate = formatDate(now + ONE_DAY_MS);
   const url = `https://api.sr.se/api/v2/episodes/index?programid=${programId}&fromdate=${formattedFromDate}&todate=${formattedToDate}&audioquality=hi`;
 
   return getProgramEpisodesByUrl(url);
@@ -105,7 +108,7 @@ export const handler = async (
     const generatedFeed = generatePodcastFeed(program, episodes);
     const writeFeedFileResult = writeFeedFile(
       feedFilePath,
-      program,
+      program.slug,
       generatedFeed,
     );
     if (!writeFeedFileResult) {
