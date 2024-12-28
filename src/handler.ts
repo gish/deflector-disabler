@@ -7,7 +7,7 @@ import {
   saveProgramEpisodes,
   setProgramUpdatedTimestamp,
 } from "./utils.database";
-import { generateFeed, parseFeed } from "./utils.feed";
+import { generatePodcastFeed, getFeed, parseFeed } from "./utils.feed";
 
 function formatDate(timestamp: number): string {
   const d = new Date(timestamp);
@@ -20,20 +20,6 @@ function formatDate(timestamp: number): string {
 
   return [year, month, day].join("-");
 }
-
-const getFeed = async (url: string): Promise<string | null> => {
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      console.error("failed getting feed", { url });
-      return null;
-    }
-    return await response.text();
-  } catch (e) {
-    console.error("failed getting feed", { url });
-  }
-  return null;
-};
 
 const writeFeedFile = (
   path: string,
@@ -59,7 +45,6 @@ export const fetchProgramEpisodes = async (
   const formattedFromDate = formatDate(lastUpdated);
   const formattedToDate = formatDate(now);
   const url = `https://api.sr.se/api/v2/episodes/index?programid=${programId}&fromdate=${formattedFromDate}&todate=${formattedToDate}&audioquality=hi`;
-  console.log({ url });
 
   return getProgramEpisodesByUrl(url);
 };
@@ -68,23 +53,19 @@ const getProgramEpisodesByUrl = async (
   url: string,
 ): Promise<SRFeedEpisode[] | null> => {
   const feed = await getFeed(url);
+
   if (!feed) {
     return null;
   }
 
-  const parsedFeed = parseFeed(feed);
-  if (!parsedFeed) {
+  if (feed.sr.pagination.size === 0) {
     return null;
   }
 
-  if (parsedFeed.sr.pagination.size === 0) {
-    return null;
-  }
-
-  const episode = parsedFeed.sr.episodes.episode;
+  const episode = feed.sr.episodes.episode;
   const episodes = Array.isArray(episode) ? episode : [episode];
 
-  const nextPage = parsedFeed.sr.pagination.nextpage;
+  const nextPage = feed.sr.pagination.nextpage;
   if (nextPage) {
     const nextFeedEpisodes = await getProgramEpisodesByUrl(nextPage);
 
@@ -113,7 +94,6 @@ export const handler = async (
       now.getTime(),
     );
 
-    console.log({ newEpisodes });
     if (!newEpisodes) {
       setProgramUpdatedTimestamp(program, now, database);
       continue;
@@ -122,7 +102,7 @@ export const handler = async (
     saveProgramEpisodes(program, newEpisodes, database);
 
     const episodes = getAllProgramEpisodes(program, database);
-    const generatedFeed = generateFeed(program, episodes);
+    const generatedFeed = generatePodcastFeed(program, episodes);
     const writeFeedFileResult = writeFeedFile(
       feedFilePath,
       program,

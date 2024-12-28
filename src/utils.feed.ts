@@ -2,7 +2,7 @@ import { Podcast } from "podcast-rss";
 import { Episode, RadioProgram, SRFeed } from "./types";
 import { XMLParser } from "fast-xml-parser";
 
-export const generateFeed = (
+export const generatePodcastFeed = (
   program: RadioProgram,
   episodes: Episode[],
 ): string => {
@@ -41,4 +41,19 @@ export const parseFeed = (XMLData: string): SRFeed | null => {
     console.log("Failed parsing feed");
     return null;
   }
+};
+
+export const getFeed = async (url: string): Promise<SRFeed | null> => {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.error("failed getting feed", { url });
+      return null;
+    }
+    const text = await response.text();
+    return parseFeed(text);
+  } catch (e) {
+    console.error("failed getting feed", { url });
+  }
+  return null;
 };
