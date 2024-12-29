@@ -18,7 +18,8 @@ export const programs: RadioProgram[] = [
     slug: "avsnitt-av-p3-historia",
     description:
       "Avsnitt av P3 Historia. Allt innehåll kommer från Sveriges Radio.",
-    imageUrl: "https://gish.github.io/deflector-disabler/assets/cover.png",
+    imageUrl:
+      "https://gish.github.io/deflector-disabler/assets/avsnitt-av-p3-historia-cover.jpg",
     lastUpdated: new Date("2024-12-01").getTime(),
   },
 ];
