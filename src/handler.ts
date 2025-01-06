@@ -12,7 +12,7 @@ import { formatDate } from "./utils";
 export const fetchProgramEpisodes = async (
   programId: number,
   lastRun: number,
-  now: number,
+  now: number
 ): Promise<SRFeedEpisode[] | null> => {
   const ONE_DAY_MS = 24 * 60 * 60 * 1e3;
   /**
@@ -26,7 +26,7 @@ export const fetchProgramEpisodes = async (
 };
 
 const getProgramEpisodesByUrl = async (
-  url: string,
+  url: string
 ): Promise<SRFeedEpisode[] | null> => {
   const feed = await getFeed(url);
 
@@ -57,7 +57,7 @@ const getProgramEpisodesByUrl = async (
 export const handler = async (
   now: Date,
   database: DatabaseSync,
-  feedFilePath: string,
+  feedFilePath: string
 ) => {
   let success = true;
 
@@ -66,11 +66,10 @@ export const handler = async (
     const newEpisodes = await fetchProgramEpisodes(
       program.srId,
       program.lastUpdated,
-      now.getTime(),
+      now.getTime()
     );
 
     if (!newEpisodes) {
-      setProgramUpdatedTimestamp(program, now, database);
       continue;
     }
 
@@ -81,7 +80,7 @@ export const handler = async (
     const writeFeedFileResult = writeFeedFile(
       feedFilePath,
       program.slug,
-      generatedFeed,
+      generatedFeed
     );
     if (!writeFeedFileResult) {
       console.error("failed writing file", { title: program.title });
