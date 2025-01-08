@@ -13,7 +13,7 @@ export const generatePodcastFeed = (
     description: program.description,
     feedUrl: "",
     siteUrl: "",
-    imageUrl: "https://gish.github.io/deflector-disabler/assets/cover.png",
+    imageUrl: program.imageUrl,
     copyright: "Sveriges Radio",
     pubDate: firstEpisode ? firstEpisode.downloadAvailableFromUTC : new Date(),
   });
