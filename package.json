@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^22.15.2",
-    "fast-xml-parser": "^5.2.1",
+    "fast-xml-parser": "^5.2.3",
     "podcast-rss": "^2.0.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
