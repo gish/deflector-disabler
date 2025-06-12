@@ -19,11 +19,13 @@ export type SRFeedEpisode = {
   description: string;
   url: string;
   imageurl: string;
-  downloadpodfile: {
-    url: string;
-    publishdateutc: string;
-    availablefromutc: string;
-  };
+  downloadpodfile:
+    | {
+        url: string;
+        publishdateutc: string;
+        availablefromutc: string;
+      }
+    | undefined;
 };
 
 export type Episode = {
