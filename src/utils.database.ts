@@ -47,7 +47,9 @@ export const saveProgramEpisodes = (
   for (const episode of episodes) {
     const downloadpodfile = episode.downloadpodfile;
     if (!downloadpodfile) {
-      console.error(`No downloadable file for ${episode.title}`);
+      console.error(
+        `\x1b[31m No downloadable file for ${episode.title}! \x1b[0m`
+      );
       continue;
     }
     insertStatement.run(
