@@ -3,10 +3,10 @@ import { Episode, RadioProgram, SRFeedEpisode } from "./types";
 
 export const getAllProgramEpisodes = (
   program: RadioProgram,
-  database: DatabaseSync
+  database: DatabaseSync,
 ) => {
   const statement = database.prepare(
-    "SELECT id, title, description, url, imageUrl, downloadUrl, downloadPublishDateUTC, downloadAvailableFromUTC FROM episodes WHERE programId = ?"
+    "SELECT id, title, description, url, imageUrl, downloadUrl, downloadPublishDateUTC, downloadAvailableFromUTC FROM episodes WHERE programId = ?",
   );
   const episodes = statement.all(program.id) as Episode[];
   return episodes;
@@ -14,11 +14,11 @@ export const getAllProgramEpisodes = (
 
 export const getAllPrograms = (
   now: Date,
-  database: DatabaseSync
+  database: DatabaseSync,
 ): RadioProgram[] => {
   const epoch = now.getTime();
   const query = database.prepare(
-    "SELECT id, srId, title, description, slug, imageUrl, lastUpdated FROM programs WHERE lastUpdated < ?"
+    "SELECT id, srId, title, description, slug, imageUrl, lastUpdated FROM programs WHERE lastUpdated < ?",
   );
   return query.all(epoch) as RadioProgram[];
 };
@@ -26,11 +26,11 @@ export const getAllPrograms = (
 export const setProgramUpdatedTimestamp = (
   program: RadioProgram,
   now: Date,
-  database: DatabaseSync
+  database: DatabaseSync,
 ): boolean => {
   const epoch = now.getTime();
   const statement = database.prepare(
-    "UPDATE programs SET lastUpdated = ? WHERE id = ?"
+    "UPDATE programs SET lastUpdated = ? WHERE id = ?",
   );
   const changes = statement.run(epoch, program.id);
   return changes.changes === 1;
@@ -39,16 +39,16 @@ export const setProgramUpdatedTimestamp = (
 export const saveProgramEpisodes = (
   program: RadioProgram,
   episodes: SRFeedEpisode[],
-  database: DatabaseSync
+  database: DatabaseSync,
 ) => {
   const insertStatement = database.prepare(
-    "INSERT INTO episodes(programId, title, description, url, imageUrl, downloadUrl, downloadPublishDateUTC, downloadAvailableFromUTC) VALUES(?, ?, ?, ?, ?, ?, ?, ?)"
+    "INSERT INTO episodes(programId, title, description, url, imageUrl, downloadUrl, downloadPublishDateUTC, downloadAvailableFromUTC) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
   );
   for (const episode of episodes) {
     const downloadpodfile = episode.downloadpodfile;
     if (!downloadpodfile) {
       console.error(
-        `\x1b[31m No downloadable file for ${episode.title}! \x1b[0m`
+        `\x1b[31m No downloadable file for ${episode.title}! \x1b[0m`,
       );
       continue;
     }
@@ -60,8 +60,9 @@ export const saveProgramEpisodes = (
       episode.imageurl,
       downloadpodfile.url,
       downloadpodfile.publishdateutc,
-      downloadpodfile.availablefromutc
+      downloadpodfile.availablefromutc,
     );
+    console.log(`Saved ${episode.title} to database`);
   }
 };
 
@@ -97,13 +98,13 @@ export const createTables = (database: DatabaseSync, force: boolean) => {
 
 export const addPrograms = (
   programs: RadioProgram[],
-  database: DatabaseSync
+  database: DatabaseSync,
 ) => {
   const insertStatement = database.prepare(
-    "INSERT INTO PROGRAMS(srId, title, description, slug, imageUrl, lastUpdated) VALUES(?, ?, ?, ?,? ,?)"
+    "INSERT INTO PROGRAMS(srId, title, description, slug, imageUrl, lastUpdated) VALUES(?, ?, ?, ?,? ,?)",
   );
   const existsQuery = database.prepare(
-    "SELECT id FROM programs WHERE srId = ?"
+    "SELECT id FROM programs WHERE srId = ?",
   );
   for (const program of programs) {
     const exists = existsQuery.get(program.srId) as RadioProgram | undefined;
@@ -116,7 +117,7 @@ export const addPrograms = (
       program.description,
       program.slug,
       program.imageUrl,
-      program.lastUpdated
+      program.lastUpdated,
     );
   }
 };
