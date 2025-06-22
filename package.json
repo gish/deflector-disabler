@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
-    "jest": "^30.0.0",
+    "jest": "^30.0.2",
     "timemachine": "^0.3.2",
     "ts-jest": "^29.4.0",
     "ts-node-dev": "^2.0.0"
