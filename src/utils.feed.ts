@@ -1,11 +1,11 @@
 import { Podcast } from "podcast-rss";
-import { Episode, RadioProgram, SRFeed } from "./types";
+import { DecoratedProgram, Episode } from "./types";
 import { XMLParser } from "fast-xml-parser";
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 
 export const generatePodcastFeed = (
-  program: RadioProgram,
-  episodes: Episode[]
+  program: DecoratedProgram,
+  episodes: Episode[],
 ): string => {
   const firstEpisode = episodes[0];
   const podcastFeed = new Podcast({
@@ -34,7 +34,7 @@ export const generatePodcastFeed = (
   return podcastFeed.buildXml();
 };
 
-export const parseFeed = (XMLData: string): SRFeed | null => {
+export const parseSRAPIResponse = <T>(XMLData: string): T | null => {
   try {
     const parser = new XMLParser();
     return parser.parse(XMLData);
@@ -44,7 +44,7 @@ export const parseFeed = (XMLData: string): SRFeed | null => {
   }
 };
 
-export const getFeed = async (url: string): Promise<SRFeed | null> => {
+export const getSRAPI = async <T>(url: string): Promise<T | null> => {
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -52,7 +52,7 @@ export const getFeed = async (url: string): Promise<SRFeed | null> => {
       return null;
     }
     const text = await response.text();
-    return parseFeed(text);
+    return parseSRAPIResponse(text);
   } catch (e) {
     console.error("failed getting feed", { url });
   }
@@ -62,7 +62,7 @@ export const getFeed = async (url: string): Promise<SRFeed | null> => {
 export const writeFeedFile = (
   path: string,
   filename: string,
-  podcastFeed: string
+  podcastFeed: string,
 ): boolean => {
   if (!existsSync(path)) {
     mkdirSync(path);

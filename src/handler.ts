@@ -1,4 +1,4 @@
-import { SRFeedEpisode } from "./types";
+import { SRFeed, SRFeedEpisode, SRProgram, SRProgramResponse } from "./types";
 import { DatabaseSync } from "node:sqlite";
 import {
   getAllProgramEpisodes,
@@ -6,13 +6,24 @@ import {
   saveProgramEpisodes,
   setProgramUpdatedTimestamp,
 } from "./utils.database";
-import { generatePodcastFeed, getFeed, writeFeedFile } from "./utils.feed";
+import { generatePodcastFeed, getSRAPI, writeFeedFile } from "./utils.feed";
 import { formatDate } from "./utils";
+
+export const fetchProgram = async (
+  programId: number,
+): Promise<SRProgram | null> => {
+  const url = `https://api.sr.se/api/v2/programs/${programId}`;
+  const programResponse = await getSRAPI<SRProgramResponse>(url);
+  if (!programResponse) {
+    return null;
+  }
+  return programResponse.sr.program;
+};
 
 export const fetchProgramEpisodes = async (
   programId: number,
   lastRun: number,
-  now: number
+  now: number,
 ): Promise<SRFeedEpisode[] | null> => {
   const ONE_DAY_MS = 24 * 60 * 60 * 1e3;
   /**
@@ -26,9 +37,9 @@ export const fetchProgramEpisodes = async (
 };
 
 const getProgramEpisodesByUrl = async (
-  url: string
+  url: string,
 ): Promise<SRFeedEpisode[] | null> => {
-  const feed = await getFeed(url);
+  const feed = await getSRAPI<SRFeed>(url);
 
   if (!feed) {
     return null;
@@ -57,7 +68,7 @@ const getProgramEpisodesByUrl = async (
 export const handler = async (
   now: Date,
   database: DatabaseSync,
-  feedFilePath: string
+  feedFilePath: string,
 ) => {
   let success = true;
 
@@ -66,7 +77,7 @@ export const handler = async (
     const newEpisodes = await fetchProgramEpisodes(
       program.srId,
       program.lastUpdated,
-      now.getTime()
+      now.getTime(),
     );
 
     if (!newEpisodes) {
@@ -80,7 +91,7 @@ export const handler = async (
     const writeFeedFileResult = writeFeedFile(
       feedFilePath,
       program.slug,
-      generatedFeed
+      generatedFeed,
     );
     if (!writeFeedFileResult) {
       console.error("failed writing file", { title: program.title });

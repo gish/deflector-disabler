@@ -1,10 +1,10 @@
 import { DatabaseSync } from "node:sqlite";
-import { handler } from "./handler";
 import { programs } from "./programs";
 import { addPrograms, createTables } from "./utils.database";
+import { handler } from "./handler";
 
 const database = new DatabaseSync("./database.sql");
 createTables(database, false);
-addPrograms(programs, database);
+(async () => await addPrograms(programs, database))();
 
 handler(new Date(), database, "./feeds");
