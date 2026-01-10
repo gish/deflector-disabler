@@ -1,11 +1,11 @@
 import { DatabaseSync } from "node:sqlite";
-import { RadioProgram, SRFeedEpisode } from "./types";
+import { DecoratedProgram, SRFeedEpisode } from "./types";
 import { mkdtempSync, readFileSync } from "node:fs";
 import { handler } from "./handler";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import timemachine from "timemachine";
-import { addPrograms, createTables } from "./utils.database";
+import { createTables, writeProgramToDatabase } from "./utils.database";
 
 describe("write new episodes to database", () => {
   const database = new DatabaseSync(":memory:");
@@ -23,18 +23,15 @@ describe("write new episodes to database", () => {
     ) as jest.Mock;
 
     createTables(database, true);
-    addPrograms(
-      [
-        {
-          id: 1,
-          srId: 22,
-          title: "program title",
-          description: "program description",
-          slug: "program",
-          imageUrl: "https://image/",
-          lastUpdated: 1,
-        },
-      ],
+    writeProgramToDatabase(
+      {
+        srId: 22,
+        title: "program title",
+        description: "program description",
+        slug: "program",
+        imageUrl: "https://image/",
+        lastUpdated: 1,
+      },
       database,
     );
   });
@@ -62,9 +59,9 @@ describe("write new episodes to database", () => {
     const now = new Date("2022-01-04");
     await handler(now, database, filePath);
     const query = database.prepare(
-      "SELECT lastUpdated FROM programs WHERE id = 1",
+      "SELECT lastUpdated FROM programs WHERE srId = 22",
     );
-    const result = query.get() as RadioProgram;
+    const result = query.get() as DecoratedProgram;
     expect(result).not.toBeFalsy();
     expect(result.lastUpdated).toEqual(now.getTime());
   });

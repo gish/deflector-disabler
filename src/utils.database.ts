@@ -1,43 +1,44 @@
 import { DatabaseSync } from "node:sqlite";
-import { Episode, RadioProgram, SRFeedEpisode } from "./types";
+import { DecoratedProgram, Episode, Program, SRFeedEpisode } from "./types";
+import { fetchProgram } from "./handler";
 
 export const getAllProgramEpisodes = (
-  program: RadioProgram,
+  program: DecoratedProgram,
   database: DatabaseSync,
 ) => {
   const statement = database.prepare(
-    "SELECT id, title, description, url, imageUrl, downloadUrl, downloadPublishDateUTC, downloadAvailableFromUTC FROM episodes WHERE programId = ?",
+    "SELECT title, description, url, imageUrl, downloadUrl, downloadPublishDateUTC, downloadAvailableFromUTC FROM episodes WHERE programId = ?",
   );
-  const episodes = statement.all(program.id) as Episode[];
+  const episodes = statement.all(program.srId) as Episode[];
   return episodes;
 };
 
 export const getAllPrograms = (
   now: Date,
   database: DatabaseSync,
-): RadioProgram[] => {
+): DecoratedProgram[] => {
   const epoch = now.getTime();
   const query = database.prepare(
-    "SELECT id, srId, title, description, slug, imageUrl, lastUpdated FROM programs WHERE lastUpdated < ?",
+    "SELECT srId, title, description, slug, imageUrl, lastUpdated FROM programs WHERE lastUpdated < ?",
   );
-  return query.all(epoch) as RadioProgram[];
+  return query.all(epoch) as DecoratedProgram[];
 };
 
 export const setProgramUpdatedTimestamp = (
-  program: RadioProgram,
+  program: DecoratedProgram,
   now: Date,
   database: DatabaseSync,
 ): boolean => {
   const epoch = now.getTime();
   const statement = database.prepare(
-    "UPDATE programs SET lastUpdated = ? WHERE id = ?",
+    "UPDATE programs SET lastUpdated = ? WHERE srId = ?",
   );
-  const changes = statement.run(epoch, program.id);
+  const changes = statement.run(epoch, program.srId);
   return changes.changes === 1;
 };
 
 export const saveProgramEpisodes = (
-  program: RadioProgram,
+  program: DecoratedProgram,
   episodes: SRFeedEpisode[],
   database: DatabaseSync,
 ) => {
@@ -53,7 +54,7 @@ export const saveProgramEpisodes = (
       continue;
     }
     insertStatement.run(
-      program.id,
+      program.srId,
       episode.title,
       episode.description,
       episode.url,
@@ -62,7 +63,7 @@ export const saveProgramEpisodes = (
       downloadpodfile.publishdateutc,
       downloadpodfile.availablefromutc,
     );
-    console.log(`Saved ${episode.title} to database`);
+    console.info(`Saved ${episode.title} to database`);
   }
 };
 
@@ -71,7 +72,6 @@ export const createTables = (database: DatabaseSync, force: boolean) => {
     database.exec("DROP TABLE IF EXISTS programs");
   }
   database.exec(`CREATE TABLE IF NOT EXISTS programs(
-    id INTEGER PRIMARY KEY,
     srId INTEGER NOT NULL,
     title STRING NOT NULL,
     description STRING NOT NULL,
@@ -96,28 +96,54 @@ export const createTables = (database: DatabaseSync, force: boolean) => {
   )`);
 };
 
-export const addPrograms = (
-  programs: RadioProgram[],
+export const writeProgramToDatabase = (
+  decoratedProgram: DecoratedProgram,
   database: DatabaseSync,
 ) => {
   const insertStatement = database.prepare(
-    "INSERT INTO PROGRAMS(srId, title, description, slug, imageUrl, lastUpdated) VALUES(?, ?, ?, ?,? ,?)",
+    "INSERT INTO PROGRAMS(srId, title, description, slug, imageUrl, lastUpdated) VALUES(?, ?, ?, ?, ?,?)",
   );
+
+  insertStatement.run(
+    decoratedProgram.srId,
+    decoratedProgram.title,
+    decoratedProgram.description,
+    decoratedProgram.slug,
+    decoratedProgram.imageUrl,
+    decoratedProgram.lastUpdated,
+  );
+};
+
+export const addPrograms = async (
+  programs: Program[],
+  database: DatabaseSync,
+) => {
   const existsQuery = database.prepare(
-    "SELECT id FROM programs WHERE srId = ?",
+    "SELECT srId FROM programs WHERE srId = ?",
   );
   for (const program of programs) {
-    const exists = existsQuery.get(program.srId) as RadioProgram | undefined;
+    const exists = existsQuery.get(program.srId) as
+      | DecoratedProgram
+      | undefined;
     if (exists) {
       continue;
     }
-    insertStatement.run(
-      program.srId,
-      program.title,
-      program.description,
-      program.slug,
-      program.imageUrl,
-      program.lastUpdated,
-    );
+
+    const srProgram = await fetchProgram(program.srId);
+    if (!srProgram) {
+      console.error("Failed fetching program", { program });
+      continue;
+    }
+
+    const decoratedProgram: DecoratedProgram = {
+      description: srProgram.description,
+      imageUrl: srProgram.programimage,
+      slug: srProgram.programslug,
+      srId: program.srId,
+      title: program.title,
+      lastUpdated: program.lastUpdated,
+    };
+
+    writeProgramToDatabase(decoratedProgram, database);
   }
 };

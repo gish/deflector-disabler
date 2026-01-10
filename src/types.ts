@@ -28,6 +28,17 @@ export type SRFeedEpisode = {
     | undefined;
 };
 
+export type SRProgram = {
+  description: string;
+  broadcastinfo: string;
+  programslug: string;
+  programimage: string;
+};
+
+export type SRProgramResponse = {
+  sr: { program: SRProgram };
+};
+
 export type Episode = {
   title: string;
   description: string;
@@ -38,12 +49,20 @@ export type Episode = {
   downloadAvailableFromUTC: string;
 };
 
-export type RadioProgram = {
-  id: number;
+/**
+ * Representation of program needed to fetch information from SR
+ */
+export type Program = {
   srId: number;
   title: string;
-  slug: string;
-  description: string;
-  imageUrl: string;
   lastUpdated: number;
+};
+
+/**
+ * Program decorated with SR Info
+ */
+export type DecoratedProgram = Program & {
+  description: string;
+  slug: string;
+  imageUrl: string;
 };
