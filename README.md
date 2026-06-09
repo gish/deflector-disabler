@@ -13,3 +13,6 @@ P3 Historia: [https://gish.github.io/deflector-disabler/feeds/p3historia.rss](ht
 USAPodden: [https://gish.github.io/deflector-disabler/feeds/usapodden.rss](https://gish.github.io/deflector-disabler/feeds/usapodden.rss)
 
 P3 Dokumentär: [https://gish.github.io/deflector-disabler/feeds/p3dokumentar.rss](https://gish.github.io/deflector-disabler/feeds/p3dokumentar.rss)
+
+Det politiska spelet: [https://gish.github.io/deflector-disabler/feeds/det-politiska-spelet.rss](https://gish.github.io/deflector-disabler/feeds/det-politiska-spelet.rss)
+

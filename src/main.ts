@@ -5,6 +5,7 @@ import { handler } from "./handler";
 
 const database = new DatabaseSync("./database.sql");
 createTables(database, false);
-(async () => await addPrograms(programs, database))();
-
-handler(new Date(), database, "./feeds");
+(async () => {
+  await addPrograms(programs, database);
+  process.exitCode = await handler(new Date(), database, "./feeds");
+})();
