@@ -22,4 +22,9 @@ export const programs: Program[] = [
 
     lastUpdated: new Date("2025-04-01").getTime(),
   },
+  {
+    srId: 4743,
+    title: "Det politiska spelet",
+    lastUpdated: new Date("2014-10-24").getTime(),
+  },
 ];
